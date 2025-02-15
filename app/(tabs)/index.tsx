@@ -1,28 +1,37 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+//import { Image, StyleSheet, Platform } from 'react-native';
+//import { HelloWave } from '@/components/HelloWave';
+//import ParallaxScrollView from '@/components/ParallaxScrollView';
+//import { ThemedText } from '@/components/ThemedText';
+//import { ThemedView } from '@/components/ThemedView';
 import React, {useState} from 'react';
-import {View , Text, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
 export default function Translator() {
   const [text, setText] = useState('');
+  const [translatedText, setTranslatedText] = useState('');
+  const [loading, setLoading] = useState(false);
+
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
+      <Text style={styles.title}>Translator</Text>
+
         <TextInput
         style={styles.input}
         placeholder="Enter text to translate"
         value={text}
         onChangeText={setText}
         />
-        <Text style={styles.output}></Text>
-      </View>
+      
       
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Translate</Text>
+        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Translate</Text>}
       </TouchableOpacity>
+
+      {translatedText !== "" && (
+        <View style={styles.outputContainer}>
+          <Text style={styles.outputText}>{translatedText}</Text>
+        </View>
+      )}
     </View>
   
   );
@@ -31,38 +40,49 @@ export default function Translator() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    alignItems: 'center',
-    padding: 15,
+    backgroundColor: "#f8f9fa",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   input: {
-    flex: 1,
+    width: "100%",
+    height: 50,
     borderWidth: 1,
-    borderColor: 'blue',
-    height: 40,
-    margin: 12,
-  },
-  output: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'blue',
-    height: 40,
-    margin: 12,
+    borderColor: "#007AFF",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#fff",
+    fontSize: 16,
+    marginBottom: 10,
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 20,
-    borderRadius: 5,
+    backgroundColor: "#007AFF",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginBottom: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+  outputContainer: {
+    marginTop: 10,
+    backgroundColor: "#E5E5EA",
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+  },
+  outputText: {
+    fontSize: 16,
   },
 });
 
