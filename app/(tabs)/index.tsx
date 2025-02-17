@@ -1,89 +1,83 @@
-//import { Image, StyleSheet, Platform } from 'react-native';
-//import { HelloWave } from '@/components/HelloWave';
-//import ParallaxScrollView from '@/components/ParallaxScrollView';
-//import { ThemedText } from '@/components/ThemedText';
-//import { ThemedView } from '@/components/ThemedView';
-import React, {useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Translator() {
-  const [text, setText] = useState('');
-  const [translatedText, setTranslatedText] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [text, setText] = useState("");
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Translator</Text>
-
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"} 
+      style={styles.container}
+    >
+      <View style={styles.translationContainer}>
+        <Text style={styles.translationText}></Text>
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
-        style={styles.input}
-        placeholder="Enter text to translate"
-        value={text}
-        onChangeText={setText}
+          style={styles.input}
+          placeholder="Enter text to translate"
+          value={text}
+          onChangeText={setText}
         />
-      
-      
-      <TouchableOpacity style={styles.button}>
-        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Translate</Text>}
-      </TouchableOpacity>
-
-      {translatedText !== "" && (
-        <View style={styles.outputContainer}>
-          <Text style={styles.outputText}>{translatedText}</Text>
-        </View>
-      )}
-    </View>
-  
+        <TouchableOpacity style={styles.button}>         
+          <Text style={styles.buttonText}>Send</Text>
+          <Ionicons name="arrow-forward-outline" size={20} color="white" /> 
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
-  
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#ebfffe",
+    justifyContent: "space-between",
+  },
+  translationContainer: {
+    padding: 20,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    marginTop: 40,
   },
-  title: {
-    fontSize: 24,
+  translationText: {
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: "#707878",
+    textAlign: "center",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderTopWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#cefffd",
   },
   input: {
-    width: "100%",
+    flex: 1,
     height: 50,
     borderWidth: 1,
-    borderColor: "#007AFF",
-    borderRadius: 10,
+    borderColor: "#ccc",
+    borderRadius: 25,
     paddingHorizontal: 15,
-    backgroundColor: "#fff",
     fontSize: 16,
-    marginBottom: 10,
+    backgroundColor: "#ebfffe",
   },
   button: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#007AFF",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 10,
-    marginBottom: 20,
+    marginLeft: 10,
   },
   buttonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  outputContainer: {
-    marginTop: 10,
-    backgroundColor: "#E5E5EA",
-    padding: 15,
-    borderRadius: 10,
-    width: "100%",
-  },
-  outputText: {
-    fontSize: 16,
+    marginRight: 5
   },
 });
-
-
