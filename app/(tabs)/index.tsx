@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     borderTopWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "blue",
     backgroundColor: "#cefffd",
   },
   input: {
