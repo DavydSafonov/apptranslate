@@ -1,9 +1,41 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import OpenAI from "openai";
+import { OPENAI_API_KEY } from "@env";
 
 export default function Translator() {
   const [text, setText] = useState("");
+  const [translatedText, setTranslatedText] = useState(""); 
+  const [loading, setLoading] = useState(false);
+
+
+  const openai = new OpenAI({
+    apiKey: OPENAI_API_KEY, 
+    dangerouslyAllowBrowser: true, 
+  });
+
+  const translateText = async () => {
+    if (!text.trim()) return; 
+
+    setLoading(true);
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4",
+        messages: [
+          { role: "system", content: "You are a translator that translates text into Russian." },
+          { role: "user", content: `Translate the following text to Russian: "${text}"` },
+        ],
+      });
+
+      setTranslatedText(response.choices[0].message.content);
+    } catch (error) {
+      console.error("Translation error:", error);
+      setTranslatedText("Translation error");
+    }
+    setLoading(false);
+  };
+
 
   return (
     <KeyboardAvoidingView 
@@ -20,7 +52,7 @@ export default function Translator() {
           value={text}
           onChangeText={setText}
         />
-        <TouchableOpacity style={styles.button}>         
+        <TouchableOpacity style={styles.button} onPress={translateText} disabled={loading}>         
           <Text style={styles.buttonText}>Send</Text>
           <Ionicons name="arrow-forward-outline" size={20} color="white" /> 
         </TouchableOpacity>
